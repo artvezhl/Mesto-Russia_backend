@@ -1,16 +1,37 @@
-const usersRouter = require('express').Router();
-// const fs = require('fs');
+const router = require('express').Router();
+const fs = require('fs').promises;
+const { createReadStream } = require('fs');
 const path = require('path');
-const users = require('../data/users.json');
 
-usersRouter.get('/users', (req, res) => {
-  // const userspath = path.join(__dirname, 'users.json');
-  // if (!users[req.params.id]) {
-  //   res.status(404).send({ "message": "Нет пользователя с таким id" });
-  // }
-  // res.send(users[req.params.id]);
-  // fs.createReadStream(users, { encoded })
-  res.send(users);
+const pathToUsers = path.join(__dirname, '../data/users.json');
+
+router.get('/', (req, res) => {
+  const reader = createReadStream(pathToUsers, { encoding: 'utf8' });
+
+  reader.on('error', () => {
+    res.status(500).send({ Error: "Ошибка сервера" });
+  });
+
+  reader.on('open', () => {
+    res.writeHead(200, { 'Content-Type': 'application-json; charset=utf-8' });
+    reader.pipe(res);
+  });
+});
+// TODO make this with async/await
+router.get('/:id', (req, res) => {
+  fs.readFile(pathToUsers, 'utf8')
+    .then((users) => {
+      const currentUser = JSON.parse(users).find(user => user._id === req.params.id);
+
+      if (!currentUser) {
+        res.status(404).send({ "message": "Нет пользователя с таким id" });
+        return;
+      }
+      res.send(currentUser);
+    })
+    .catch(() => {
+      res.status(500).send({ Error: "Ошибка сервера" });
+    });
 });
 
-module.exports = usersRouter;
+module.exports = router;
