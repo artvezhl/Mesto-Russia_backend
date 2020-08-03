@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
     reader.pipe(res);
   });
 });
-// TODO make this with async/await
+
 router.get('/:id', (req, res) => {
   fs.readFile(pathToUsers, 'utf8')
     .then((users) => {
