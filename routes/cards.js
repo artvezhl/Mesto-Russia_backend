@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   const reader = fs.createReadStream(pathTocards, { encoding: 'utf8' });
 
   reader.on('error', () => {
-    res.status(500).send({ Error: "Ошибка сервера" });
+    res.status(500).send({ Error: 'Ошибка сервера' });
   });
 
   reader.on('open', () => {
