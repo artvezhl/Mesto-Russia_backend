@@ -1,4 +1,10 @@
 const mongoose = require('mongoose');
+// TODO Validation
+// const assert = require('assert');
+require('mongoose-type-url');
+
+// TODO убрать если не понадобится
+const urlRegexp = /((https?|http)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)(\w+|\.|\-|\/|\?|\=|\&)*/;
 
 // создание экземпляра схемы с необходимыми полями
 const userSchema = new mongoose.Schema({
@@ -16,16 +22,31 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    // валидация ссылки
+    // TODO delete
+    // match: urlRegex,
     validate: {
-      validator: function(v) {
-        return /(http:\/\/|https:\/\/)((([a-z]+(\.|-))+[a-z]+)|(\d\.\d\.\d\.\d))(:(([1-5][0-9]{1,4})|(6[0-4][0-9]{3})|(65[0-5][0-3][0-6])|([1-9][0-9]{3})|([1-9][0-9]{2})|([1-9][0-9])|([1-9])))?\/?(\w*|(\/|#))*/.test(v);
-      },
-      message: props => `${props.value} is not a valid link!`
+      validator: (v) => urlRegexp.test(v),
+      message: (props) => `${props.value} is not a valid link!`
     },
     required: true
   }
 });
+
+// TODO Validation
+// const User = mongoose.model('user', userSchema);
+// const user = new User();
+// let error;
+//
+// user.avatar = 'kldsf./sdgffdghm';
+// error = user.validateSync();
+// assert.equal(error.errors['avatar'].message,
+//   'kldsf./sdgffdghm is not a valid avatar!');
+//
+// user.phone = '201-555-0123';
+// // Validation succeeds! Phone number is defined
+// // and fits `DDD-DDD-DDDD`
+// error = user.validateSync();
+// assert.equal(error, null);
 
 // создание модели пользователя
 module.exports = mongoose.model('user', userSchema);

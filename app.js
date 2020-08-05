@@ -15,11 +15,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useUnifiedTopology: true
 });
 
 // раздача статики (разметки)
-app.use(express.static(__dirname, '/public'));
+// app.use(express.static(__dirname, '/public'));
+
+// Middleware
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5f2a43d6be1ec30a6ca59454'
+  };
+
+  next();
+});
+
 // роуты к разным путям и несуществующему пути
 app.use('/users', users);
 app.use('/cards', cards);
