@@ -22,11 +22,17 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    // TODO delete
+    // TODO delete, настроить валидацию и убрать консоль логи
     // match: urlRegex,
     validate: {
-      validator: (v) => urlRegexp.test(v),
-      message: (props) => `${props.value} is not a valid link!`
+      validator: (v) => {
+        console.log('МЫ В ВАЛИДАТОРЕ!!!');
+        return urlRegexp.test(v);
+      },
+      message: (props) => {
+        console.log('А ТЕПЕРЬ МЫ В сообщении ВАЛИДАТОРА!!!', props.value);
+        return `${props.value} is not a valid link!`;
+      }
     },
     required: true
   }
