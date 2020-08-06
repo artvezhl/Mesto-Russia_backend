@@ -4,7 +4,7 @@ const Card = require('../models/card');
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500, { Error: 'Ошибка сервера' }))
+    .catch(err => res.status(500).send(err.message));
 }
 
 // создание карточки
@@ -15,12 +15,12 @@ module.exports.createCard = (req, res) => {
     .then((card) => {
       return res.send({data: card});
     })
-    .catch(err => res.status(500, { Error: 'Ошибка сервера' }))
+    .catch(err => res.status(500).send(err.message));
 }
 
 // удаление карточки
 module.exports.removeCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then(card => res.send({ data: card }))
-    .catch(err => res.status(500, { Error: 'Ошибка сервера' }))
+    .catch(err => res.status(500).send(err.message));
 }

@@ -12,16 +12,9 @@ const cardSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    // валидация ссылки TODO сделать единообразно с юзерами
     validate: {
-      validator: (v) => {
-        console.log('МЫ В ВАЛИДАТОРЕ КАРТОЧКИ!!!');
-        return urlRegexp.test(v);
-      },
-      message: (props) => {
-        console.log('МЫ В СООБЩЕНИИ ОБ ОШИБКЕ ВАЛИДАТОРА КАРТОЧКИ!!!', props.value);
-        return `${props.value} is not a valid link!`;
-      },
+      validator: v => urlRegexp.test(v),
+      message: props => `"${props.value}" is not a valid link!`
     },
     required: true
   },

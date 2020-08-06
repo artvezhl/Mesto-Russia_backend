@@ -19,13 +19,10 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true
 });
 
-// раздача статики (разметки)
-// app.use(express.static(__dirname, '/public'));
-
 // Middleware
 app.use((req, res, next) => {
   req.user = {
-    _id: '5f2a43d6be1ec30a6ca59454'
+    _id: '5f2c225dd25f417c8b0dbafe'
   };
 
   next();
