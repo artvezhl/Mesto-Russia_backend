@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
-// TODO Validation
-// const assert = require('assert');
-require('mongoose-type-url');
 
-// TODO убрать если не понадобится
 const urlRegexp = /((https?|http)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)(\w+|\.|\-|\/|\?|\=|\&)*/;
 
 // создание экземпляра схемы с необходимыми полями
