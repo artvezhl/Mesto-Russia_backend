@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
+/* eslint-disable */
 const urlRegexp = /((https?|http)\:\/\/)?([a-z0-9]{1})((\.[a-z0-9-])|([a-z0-9-]))*\.([a-z]{2,6})(\/?)(\w+|\.|\-|\/|\?|\=|\&)*/;
+/* eslint-enable */
 
 // создание экземпляра схемы с необходимыми полями
 const cardSchema = new mongoose.Schema({
