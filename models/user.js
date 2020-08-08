@@ -8,22 +8,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: 2,
-    maxLength: 30
+    maxLength: 30,
   },
   about: {
     type: String,
     required: true,
     minLength: 2,
-    maxLength: 30
+    maxLength: 30,
   },
   avatar: {
     type: String,
     validate: {
-      validator: v => urlRegexp.test(v),
-      message: props => `"${props.value}" is not a valid link!`
-      },
-    required: true
-  }
+      validator: (v) => urlRegexp.test(v),
+    },
+    required: true,
+  },
 });
 
 // создание модели пользователя

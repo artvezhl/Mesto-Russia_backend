@@ -10,19 +10,20 @@ const unfoundPage = require('./middlewares/unfound.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+// TODO создать новый репозиторий для проекта
+// TODO проверить Eslint
 // подключение к Mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 // Middleware
 app.use((req, res, next) => {
   req.user = {
-    _id: '5f2c225dd25f417c8b0dbafe'
+    _id: '5f2c225dd25f417c8b0dbafe',
   };
 
   next();

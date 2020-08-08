@@ -8,29 +8,28 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: 2,
-    maxLength: 30
+    maxLength: 30,
   },
   link: {
     type: String,
     validate: {
-      validator: v => urlRegexp.test(v),
-      message: props => `"${props.value}" is not a valid link!`
+      validator: (v) => urlRegexp.test(v),
     },
-    required: true
+    required: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true
+    required: true,
   },
   likes: {
     type: [mongoose.Schema.Types.ObjectId],
-    default: []
+    default: [],
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 // создание модели карточки
