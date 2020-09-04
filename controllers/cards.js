@@ -28,15 +28,21 @@ module.exports.createCard = async (req, res) => {
 // удаление карточки
 module.exports.removeCard = async (req, res) => {
   try {
-    const cardToRemove = await Card.findByIdAndRemove(req.params.cardId);
-    if (cardToRemove === null) {
-      res.status(404).send({ message: `Карточка с номером ${req.params.cardId} отсутствует!` });
-      return;
+    const card = await Card.findById(req.params.cardId);
+    let cardToRemove;
+    if (req.user._id.toString() !== card.owner.toString()) {
+      res.status(403).send({ message: `У Вас отсутствуют права на удаление карточки ${req.params.cardId}` });
+    } else {
+      cardToRemove = await Card.findByIdAndRemove(req.params.cardId);
+      if (cardToRemove === null) {
+        res.status(404).send({ message: `Карточка с номером ${req.params.cardId} отсутствует` });
+        return;
+      }
     }
     res.send(cardToRemove);
   } catch (err) {
     if (err.name === 'CastError') {
-      res.status(404).send({ message: `Номер ${req.params.cardId} не является валидным!` });
+      res.status(400).send({ message: `Номер ${req.params.cardId} не является валидным` });
       return;
     }
     res.status(500).send({ message: 'На сервере произошла ошибка' });
@@ -52,13 +58,13 @@ module.exports.likeCard = async (req, res) => {
       { new: true },
     );
     if (cardToLike === null) {
-      res.status(404).send({ message: `Карточка с номером ${req.params.cardId} отсутствует!` });
+      res.status(404).send({ message: `Карточка с номером ${req.params.cardId} отсутствует` });
       return;
     }
     res.send(cardToLike);
   } catch (err) {
-    if (err.value) {
-      res.status(404).send({ message: `Карточка с номером ${err.value} отсутствует!` });
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: `Карточка с номером ${req.params.cardId} отсутствует` });
       return;
     }
     res.status(500).send({ message: 'На сервере произошла ошибка' });
@@ -79,8 +85,8 @@ module.exports.dislikeCard = async (req, res) => {
     }
     res.send(cardToDislike);
   } catch (err) {
-    if (err.value) {
-      res.status(404).send({ message: `Карточка с номером ${err.value} отсутствует!` });
+    if (err.name === 'CastError') {
+      res.status(404).send({ message: `Карточка с номером ${req.params.cardId} отсутствует!` });
       return;
     }
     res.status(500).send({ message: 'На сервере произошла ошибка' });
